@@ -30,11 +30,6 @@ export class AppComponent {
     });
   }
 
-  // A getter method to access the 'phoneNumbers' FormArray within the 'dataForm'.
-  get phoneNumbers() {
-    return this.dataForm.get('phoneNumbers') as FormArray;
-  }
-
   // Method to handle form submission.
   submit() {
     console.log(this.dataForm.value); // Logs the form values to the console.
