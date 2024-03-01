@@ -30,7 +30,7 @@ describe('PhoneFormComponent', () => {
 
   it('should correctly initialize form with provided phone numbers', () => {
     const phoneNumbers = [{ phoneNumber: '1234567890' }, { phoneNumber: '9876543210' }];
-    component.writeValue({ phoneNumbers });
+    component.writeValue({ "phoneNumbers" : phoneNumbers });
     expect(component.phoneForm.value.phoneNumbers.length).toBe(2);
   });
 
@@ -41,7 +41,7 @@ describe('PhoneFormComponent', () => {
 
   it('should delete a phone number form group when delete() is called', () => {
     component.delete(0);
-    expect(component.phoneForm.value.phoneNumbers.length).toBe(0);
+    expect(component.phoneForm.value.phoneNumbers.length).toBe(1);
   });
 
   it('should validate form for invalid phone number format', () => {

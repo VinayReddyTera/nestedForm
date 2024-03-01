@@ -5,7 +5,7 @@
 */
 
 import { Component } from '@angular/core';
-import { FormGroup, FormBuilder, FormArray } from '@angular/forms';
+import { FormGroup, FormBuilder, FormArray, Validators } from '@angular/forms';
 import { ApiService } from './service/api.service';
 
 @Component({
@@ -23,7 +23,7 @@ export class AppComponent {
   constructor(private fb: FormBuilder,private apiservice:ApiService) {
     // Initializes 'dataForm' using FormBuilder to create a FormGroup with initial form controls and values.
     this.dataForm = fb.group({
-      name: ['Vinay'], // A form control for 'name' initialized with 'Vinay'.
+      name: ['Vinay',[Validators.required]], // A form control for 'name' initialized with 'Vinay'.
       email: ['abc@gmail.com'], // A form control for 'email' initialized with 'abc@gmail.com'.
       phoneNumbers: [[]], // A form control for 'phoneNumbers' initialized as an empty array.
       addressData : ['']

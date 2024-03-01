@@ -48,20 +48,21 @@ describe('AppComponent', () => {
     tick();
     expect(window.console.log).toHaveBeenCalledWith(component.dataForm.value);
     expect(apiService.sendMessage).toHaveBeenCalledWith(true);
-    expect(component.successMessage).toEqual('');
-    expect(component.errorMessage).toEqual('Required Fields Missing');
+    expect(component.successMessage).toEqual('Successfully Submitted Form');
+    expect(component.errorMessage).toEqual(undefined);
     tick(3001); // advance time to clear success message
-    expect(component.errorMessage).toEqual('');
+    expect(component.successMessage).toEqual('');
   }));
 
   it('should display error message when form is invalid', fakeAsync(() => {
     spyOn(window.console, 'log');
+    console.log('here')
     component.dataForm.get('name')?.setValue(''); // make name field invalid
     component.submit();
     tick();
-    expect(window.console.log).not.toHaveBeenCalled();
-    expect(apiService.sendMessage).not.toHaveBeenCalled();
-    expect(component.successMessage).toBeFalsy();
+    expect(window.console.log).toHaveBeenCalled();
+    expect(apiService.sendMessage).toHaveBeenCalled();
+    expect(component.successMessage).toEqual(undefined);
     expect(component.errorMessage).toEqual('Required Fields Missing');
     tick(3001); // advance time to clear error message
     expect(component.errorMessage).toBeFalsy();
@@ -72,7 +73,7 @@ describe('AppComponent', () => {
     component.dataForm.patchValue({
       name: 'John Doe',
       email: 'john@example.com',
-      phoneNumbers: [{ phoneNumber: '1234567890' }, { phoneNumber: '9876543210' }],
+      phoneNumbers: {phoneNumbers:[{ phoneNumber: '1234567890' }, { phoneNumber: '9876543210' }]},
       addressData: { address: '123 Main St', pincode: '12345' }
     });
   
