@@ -1,13 +1,13 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ReactiveFormsModule, FormsModule, FormControl } from '@angular/forms';
-import { BehaviorSubject } from 'rxjs';
+import { ReactiveFormsModule, FormsModule, FormControl, Validators, FormArray } from '@angular/forms';
+import { BehaviorSubject, of } from 'rxjs';
 import { PhoneFormComponent } from './phone-form.component';
 import { ApiService } from '../service/api.service';
 
 describe('PhoneFormComponent', () => {
   let component: PhoneFormComponent;
   let fixture: ComponentFixture<PhoneFormComponent>;
-  let apiServiceSpy: jasmine.SpyObj<ApiService>;
+  let apiService: ApiService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -21,6 +21,7 @@ describe('PhoneFormComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(PhoneFormComponent);
     component = fixture.componentInstance;
+    apiService = TestBed.inject(ApiService);
     fixture.detectChanges();
   });
 
@@ -85,4 +86,33 @@ describe('PhoneFormComponent', () => {
     expect(() => component.validate(mockFormControl)).not.toThrow();
   });
 
+  it('should subscribe to apiService message on ngOnInit', () => {
+    const messageSpy = spyOn(apiService.message, 'subscribe');
+    component.ngOnInit();
+    expect(messageSpy).toHaveBeenCalled();
+  });
+
+  it('should mark invalid phone form controls as dirty when a message is received', () => {
+    const control1 = new FormControl('', Validators.required);
+    control1.setValue(''); // Set a value for the FormControl
+    control1.markAsDirty();
+    control1.setErrors({ required: true });
+
+    const phoneNumbers = new FormArray([control1]);
+    component.phoneForm.get('phoneNumbers').setValue([{ phoneNumber: '1234567890' }]);
+
+    // Mock message using BehaviorSubject to simulate an observable
+    const message = true;
+    const subject = new BehaviorSubject<any>(null);
+    apiService.message = subject;
+
+    subject.next(message); // Emit the message
+
+    fixture.detectChanges(); // Trigger change detection to propagate message
+
+    // Assert that the invalid control has been marked dirty
+    expect(control1.dirty).toBeTrue();
+    expect(control1.errors).not.toBeNull(); // Or use specific error assertions
+  });
+  
 });

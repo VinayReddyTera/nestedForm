@@ -21,8 +21,8 @@ import { ApiService } from '../service/api.service';
   styleUrls: ['./address-form.component.css'],
   providers: [
     // Provides NG_VALUE_ACCESSOR and NG_VALIDATORS to enable two-way data binding and form validation.
-    { provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => AddressFormComponent), multi: true },
-    { provide: NG_VALIDATORS, useExisting: forwardRef(() => AddressFormComponent), multi: true }
+    { provide: NG_VALUE_ACCESSOR, useExisting: AddressFormComponent, multi: true },
+    { provide: NG_VALIDATORS, useExisting: AddressFormComponent, multi: true }
   ]
 })
 export class AddressFormComponent implements ControlValueAccessor,OnInit {
