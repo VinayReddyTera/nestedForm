@@ -1,0 +1,20 @@
+<div [formGroup]="addressForm">
+    <div class="mb-3">
+        <label for="address">Address<sup class="text-danger">*</sup></label>
+        <input type="text" class="form-control" id="address" formControlName="address" placeholder="Address">
+        <div
+        *ngIf="f.address.errors?.required && f.address.dirty"
+        class="required-message text-danger">
+        <small>Required Field!</small>
+        </div>
+    </div>
+    <div class="mb-3">
+        <label for="pincode">Pincode<sup class="text-danger">*</sup></label>
+        <input type="text" class="form-control" id="pincode" formControlName="pincode" placeholder="Pincode">
+        <div
+        *ngIf="f.pincode.errors?.required && f.pincode.dirty"
+        class="required-message text-danger">
+        <small>Required Field!</small>
+        </div>
+    </div>
+</div>
