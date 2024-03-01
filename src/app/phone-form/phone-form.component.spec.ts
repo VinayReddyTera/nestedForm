@@ -1,15 +1,19 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormsModule, FormControl } from '@angular/forms';
+import { BehaviorSubject } from 'rxjs';
 import { PhoneFormComponent } from './phone-form.component';
+import { ApiService } from '../service/api.service';
 
 describe('PhoneFormComponent', () => {
   let component: PhoneFormComponent;
   let fixture: ComponentFixture<PhoneFormComponent>;
+  let apiServiceSpy: jasmine.SpyObj<ApiService>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [ PhoneFormComponent ],
-      imports: [ ReactiveFormsModule, FormsModule ]
+      imports: [ ReactiveFormsModule, FormsModule ],
+      providers:[ApiService]
     })
     .compileComponents();
   });
@@ -64,5 +68,21 @@ describe('PhoneFormComponent', () => {
     expect(control.valid).toBe(true);
   });
 
-  // Add more test cases for form validation, message subscription, touch handling, etc.
+  it('should subscribe to value changes on registerOnChange', () => {
+    const spy = spyOn(component.phoneForm.valueChanges, 'subscribe').and.callThrough();
+    const mockCallback = jasmine.createSpy('mockCallback');
+    component.registerOnChange(mockCallback);
+    expect(spy).toHaveBeenCalled();
+    expect(spy).toHaveBeenCalledWith(mockCallback);
+  });
+
+  it('should call registerOnTouched without errors', () => {
+    expect(() => component.registerOnTouched()).not.toThrow();
+  });
+
+  it('should call validate without errors', () => {
+    const mockFormControl = new FormControl();
+    expect(() => component.validate(mockFormControl)).not.toThrow();
+  });
+
 });

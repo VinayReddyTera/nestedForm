@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormsModule, NG_VALUE_ACCESSOR, NG_VALIDATORS, FormControl } from '@angular/forms';
 import { AddressFormComponent } from './address-form.component';
 import { of } from 'rxjs';
 import { ApiService } from '../service/api.service';
@@ -80,5 +80,21 @@ describe('AddressFormComponent', () => {
     expect(component.addressForm.valid).toBeTruthy();
   });
 
-  // Add more test cases as needed for further scenarios.
+  it('should subscribe to value changes on registerOnChange', () => {
+    const spy = spyOn(component.addressForm.valueChanges, 'subscribe').and.callThrough();
+    const mockCallback = jasmine.createSpy('mockCallback');
+    component.registerOnChange(mockCallback);
+    expect(spy).toHaveBeenCalled();
+    expect(spy).toHaveBeenCalledWith(mockCallback);
+  });
+
+  it('should call registerOnTouched without errors', () => {
+    expect(() => component.registerOnTouched()).not.toThrow();
+  });
+
+  it('should call validate without errors', () => {
+    const mockFormControl = new FormControl();
+    expect(() => component.validate(mockFormControl)).not.toThrow();
+  });
+
 });
