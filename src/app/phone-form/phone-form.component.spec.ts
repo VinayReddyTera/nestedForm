@@ -30,7 +30,7 @@ describe('PhoneFormComponent', () => {
 
   it('should correctly initialize form with provided phone numbers', () => {
     const phoneNumbers = [{ phoneNumber: '1234567890' }, { phoneNumber: '9876543210' }];
-    component.writeValue({ "phoneNumbers" : phoneNumbers });
+    component.writeValue(phoneNumbers);
     expect(component.phoneForm.value.phoneNumbers.length).toBe(2);
   });
 
