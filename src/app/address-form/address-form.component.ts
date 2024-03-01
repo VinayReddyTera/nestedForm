@@ -28,7 +28,7 @@ import { ApiService } from '../service/api.service';
 export class AddressFormComponent implements ControlValueAccessor,OnInit {
   addressForm: any; // Defines a property to hold the form group.
 
-  constructor(private fb: FormBuilder,private apiservice:ApiService) {
+  constructor(private fb: FormBuilder,protected apiservice:ApiService) {
     // Using Angular's FormBuilder service to create a form group
     this.addressForm = fb.group({
       // Defining form controls with initial values and validators

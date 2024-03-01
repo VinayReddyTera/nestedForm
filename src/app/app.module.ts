@@ -12,7 +12,7 @@ import { PhoneFormComponent } from './phone-form/phone-form.component';
 import { AddressFormComponent } from './address-form/address-form.component';
 
 @NgModule({
-  declarations: [AppComponent, PhoneFormComponent, AddressFormComponent],
+  declarations: [PhoneFormComponent, AddressFormComponent,AppComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,

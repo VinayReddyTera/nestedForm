@@ -15,10 +15,10 @@
                         <input type="email" class="form-control" formControlName="email">
                     </div>
                     <div class="mb-3">
-                        <app-address-form id="address" formControlName="addressData"></app-address-form>
+                        <app-address-form id="address" formControlName="addressData" ngDefaultControl></app-address-form>
                     </div>
                     <div class="mb-3">
-                        <app-phone-form id="phoneNo" formControlName="phoneNumbers"></app-phone-form>
+                        <app-phone-form id="phoneNo" formControlName="phoneNumbers" ngDefaultControl></app-phone-form>
                     </div>
                      <button type="submit" class="btn btn-success">Submit</button>
                      <div *ngIf="errorMessage" class="text-danger text-center font-weight-bold mt-1">{{errorMessage}}</div>
@@ -39,23 +39,23 @@
             <tbody>
               <tr>
                 <td>Name</td>
-                <td>{{dataForm.value.name || 'N/A'}}</td>
+                <td id="name">{{dataForm.value.name || 'N/A'}}</td>
               </tr>
               <tr>
                 <td>Email</td>
-                <td>{{dataForm.value.email || 'N/A'}}</td>
+                <td id="email">{{dataForm.value.email || 'N/A'}}</td>
               </tr>
               <tr *ngFor="let number of dataForm.value.phoneNumbers?.phoneNumbers;let i = index">
                 <td>Phone Number {{i+1}}</td>
-                <td>{{number.phoneNumber || 'N/A'}}</td>
+                <td [id]="'phone'+i">{{number.phoneNumber || 'N/A'}}</td>
               </tr>
               <tr>
                 <td>Address</td>
-                <td>{{dataForm.value.addressData?.address || 'N/A'}}</td>
+                <td id="address">{{dataForm.value.addressData?.address || 'N/A'}}</td>
               </tr>
               <tr>
                 <td>Pincode</td>
-                <td>{{dataForm.value.addressData?.pincode || 'N/A'}}</td>
+                <td id="pincode">{{dataForm.value.addressData?.pincode || 'N/A'}}</td>
               </tr>
             </tbody>
         </table>

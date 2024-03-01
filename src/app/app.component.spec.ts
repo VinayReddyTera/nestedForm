@@ -1,35 +1,120 @@
-import { TestBed } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
+import { ComponentFixture, TestBed, tick, fakeAsync } from '@angular/core/testing';
+import { ReactiveFormsModule } from '@angular/forms';
 import { AppComponent } from './app.component';
+import { ApiService } from './service/api.service';
+import { of } from 'rxjs';
 
 describe('AppComponent', () => {
+  let component: AppComponent;
+  let fixture: ComponentFixture<AppComponent>;
+  let apiService: ApiService;
+
   beforeEach(async () => {
+    // Mock ApiService
+    const apiServiceSpy = jasmine.createSpyObj('ApiService', ['sendMessage']);
+    apiServiceSpy.sendMessage.and.returnValue(of(null));
+
     await TestBed.configureTestingModule({
-      imports: [
-        RouterTestingModule
-      ],
-      declarations: [
-        AppComponent
-      ],
-    }).compileComponents();
+      declarations: [ AppComponent ],
+      imports: [ ReactiveFormsModule ],
+      providers: [
+        { provide: ApiService, useValue: apiServiceSpy }
+      ]
+    })
+    .compileComponents();
   });
 
-  it('should create the app', () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.componentInstance;
-    expect(app).toBeTruthy();
-  });
-
-  it(`should have as title 'ui'`, () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.componentInstance;
-    expect(app.title).toEqual('ui');
-  });
-
-  it('should render title', () => {
-    const fixture = TestBed.createComponent(AppComponent);
+  beforeEach(() => {
+    fixture = TestBed.createComponent(AppComponent);
+    component = fixture.componentInstance;
+    apiService = TestBed.inject(ApiService);
     fixture.detectChanges();
-    const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('.content span')?.textContent).toContain('ui app is running!');
   });
+
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
+
+  it('should initialize form with default values', () => {
+    expect(component.dataForm.value.name).toEqual('Vinay');
+    expect(component.dataForm.value.email).toEqual('abc@gmail.com');
+    expect(component.dataForm.value.phoneNumbers.length).toEqual(0);
+    expect(component.dataForm.value.addressData).toEqual('');
+  });
+
+  it('should submit form successfully when valid', fakeAsync(() => {
+    spyOn(window.console, 'log');
+    component.submit();
+    tick();
+    expect(window.console.log).toHaveBeenCalledWith(component.dataForm.value);
+    expect(apiService.sendMessage).toHaveBeenCalledWith(true);
+    expect(component.successMessage).toEqual('');
+    expect(component.errorMessage).toEqual('Required Fields Missing');
+    tick(3001); // advance time to clear success message
+    expect(component.errorMessage).toEqual('');
+  }));
+
+  it('should display error message when form is invalid', fakeAsync(() => {
+    spyOn(window.console, 'log');
+    component.dataForm.get('name')?.setValue(''); // make name field invalid
+    component.submit();
+    tick();
+    expect(window.console.log).not.toHaveBeenCalled();
+    expect(apiService.sendMessage).not.toHaveBeenCalled();
+    expect(component.successMessage).toBeFalsy();
+    expect(component.errorMessage).toEqual('Required Fields Missing');
+    tick(3001); // advance time to clear error message
+    expect(component.errorMessage).toBeFalsy();
+  }));
+
+  it('should display entered data in the table', () => {
+    // Patch form values
+    component.dataForm.patchValue({
+      name: 'John Doe',
+      email: 'john@example.com',
+      phoneNumbers: [{ phoneNumber: '1234567890' }, { phoneNumber: '9876543210' }],
+      addressData: { address: '123 Main St', pincode: '12345' }
+    });
+  
+    // Trigger change detection
+    fixture.detectChanges();
+  
+    // Get compiled component
+    const compiled = fixture.nativeElement;
+  
+    // Verify table exists
+    expect(compiled.querySelector('table')).toBeTruthy();
+  
+    // Verify name
+    const nameCell = compiled.querySelector('td#name');
+    expect(nameCell).toBeTruthy();
+    expect(nameCell.textContent.trim()).toEqual('John Doe');
+  
+    // Verify email
+    const emailCell = compiled.querySelector('td#email');
+    expect(emailCell).toBeTruthy();
+    expect(emailCell.textContent.trim()).toEqual('john@example.com');
+  
+    // Verify phone numbers
+    const phone0Cell = compiled.querySelector('td#phone0');
+    expect(phone0Cell).toBeTruthy();
+    expect(phone0Cell.textContent.trim()).toEqual('1234567890');
+  
+    const phone1Cell = compiled.querySelector('td#phone1');
+    expect(phone1Cell).toBeTruthy();
+    expect(phone1Cell.textContent.trim()).toEqual('9876543210');
+  
+    // Verify address
+    const addressCell = compiled.querySelector('td#address');
+    expect(addressCell).toBeTruthy();
+    expect(addressCell.textContent.trim()).toEqual('123 Main St');
+  
+    // Verify pincode
+    const pincodeCell = compiled.querySelector('td#pincode');
+    expect(pincodeCell).toBeTruthy();
+    expect(pincodeCell.textContent.trim()).toEqual('12345');
+  });
+  
+
+  // Add more test cases as needed
 });

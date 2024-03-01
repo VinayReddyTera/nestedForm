@@ -26,7 +26,7 @@ export class AppComponent {
       name: ['Vinay'], // A form control for 'name' initialized with 'Vinay'.
       email: ['abc@gmail.com'], // A form control for 'email' initialized with 'abc@gmail.com'.
       phoneNumbers: [[]], // A form control for 'phoneNumbers' initialized as an empty array.
-      addressData : []
+      addressData : ['']
     });
   }
 
