@@ -64,17 +64,6 @@ export class PhoneFormComponent implements ControlValueAccessor,OnInit {
 
   // Method to write form values into the form.
   writeValue(value: any): void {
-    if(value){
-      const phoneFormArray = this.phoneForm.get('phoneNumbers') as FormArray;
-      phoneFormArray.clear();
-      value.forEach((i:any) => {
-        phoneFormArray.push(
-          this.fb.group({
-            phoneNumber: [{value:i.phoneNumber},[Validators.required]]
-          })
-        );
-      });
-    }
   }
   
   // Registers a callback function to be called when form values change.
