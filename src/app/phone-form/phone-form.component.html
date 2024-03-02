@@ -1,32 +1,52 @@
 <div [formGroup]="phoneForm">
-    <table class="table table-bordered">
-        <thead class="thead-light">
-          <tr>
-              <th scope="col">Phone Number<sup class="text-danger">*</sup></th>
-              <th scope="col">Action</th>
-          </tr>
-      </thead>
-      <tbody formArrayName="phoneNumbers" *ngFor="let number of phoneForm.get('phoneNumbers').controls; let i = index" style="border-top: none;">
-        <tr [formGroupName]="i">
-            <td>
-              <input type="tel" class="form-control" [id]="'number' + i" placeholder="Enter Number" formControlName="phoneNumber">
-              <div *ngIf="number.get('phoneNumber').errors?.required &&
-                      number.get('phoneNumber').dirty" class="text-danger">
-                      <small>Phone Number is required</small>
-              </div>
-              <div *ngIf="number.get('phoneNumber').errors?.phoneError && !number.get('phoneNumber').errors?.required && number.get('phoneNumber').dirty" class="required-message text-danger">
-                <small>{{number.get('phoneNumber').errors.phoneError.message}}</small>
-              </div>
-            </td>
-            <td>
-            <div style="display:flex;">
-              <button type="button" class="btn btn-success btn-rounded btn-icon icon" (click)="addPhoneNumberButtonClick()"><i class="fa fa-plus edit1"></i></button>&nbsp;
-              <button type="button" class="btn btn-danger btn-rounded btn-icon icon" (click)="delete(i)">
-                <i class="fa fa-trash edit1"></i>
-              </button>
-            </div>
-            </td>
-        </tr>
-      </tbody>
-      </table>
-  </div>
+  <!-- Phone Form Table -->
+  <table class="table table-bordered">
+    <!-- Table Head -->
+    <thead class="thead-light">
+      <!-- Table Header Row -->
+      <tr>
+        <!-- Phone Number Column Header -->
+        <th scope="col">Phone Number<sup class="text-danger">*</sup></th>
+        <!-- Action Column Header -->
+        <th scope="col">Action</th>
+      </tr>
+    </thead>
+    <!-- Table Body -->
+    <tbody formArrayName="phoneNumbers" *ngFor="let number of phoneForm.get('phoneNumbers').controls; let i = index"
+      style="border-top: none;">
+      <!-- Table Row -->
+      <tr [formGroupName]="i">
+        <!-- Phone Number Input Cell -->
+        <td>
+          <input type="tel" class="form-control" [id]="'number' + i" placeholder="Enter Number"
+            formControlName="phoneNumber">
+          <!-- Error Message for Required Field -->
+          <div *ngIf="number.get('phoneNumber').errors?.required && number.get('phoneNumber').dirty"
+            class="text-danger">
+            <small>Phone Number is required</small>
+          </div>
+          <!-- Error Message for Invalid Phone Number -->
+          <div
+            *ngIf="number.get('phoneNumber').errors?.phoneError && !number.get('phoneNumber').errors?.required && number.get('phoneNumber').dirty"
+            class="required-message text-danger">
+            <small>{{number.get('phoneNumber').errors.phoneError.message}}</small>
+          </div>
+        </td>
+        <!-- Action Buttons Cell -->
+        <td>
+          <div style="display:flex;">
+            <!-- Add Phone Number Button -->
+            <button type="button" class="btn btn-success btn-rounded btn-icon icon"
+              (click)="addPhoneNumberButtonClick()">
+              <i class="fa fa-plus edit1"></i>
+            </button>&nbsp;
+            <!-- Delete Phone Number Button -->
+            <button type="button" class="btn btn-danger btn-rounded btn-icon icon" (click)="delete(i)">
+              <i class="fa fa-trash edit1"></i>
+            </button>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

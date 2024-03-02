@@ -4,7 +4,7 @@
     It imports necessary modules from Angular core and forms libraries.
 */
 
-import { Component, forwardRef, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import {
   FormControl,
   ControlValueAccessor,
@@ -38,19 +38,26 @@ export class AddressFormComponent implements ControlValueAccessor,OnInit {
   }
 
   ngOnInit(): void {
+    // Subscribe to the message observable provided by the ApiService
     this.apiservice.message.subscribe((message:any) => {
+      // Check if a message is received
       if(message){
+        // Check if the addressForm is not valid
         if(!this.addressForm.valid){
+          // Get all controls in the addressForm
           const controls = this.addressForm.controls;
+          // Loop through each control
           for(const name in controls) {
+            // Check if the control is invalid
             if(controls[name].invalid) {
-                controls[name].markAsDirty()
+              // Mark the control as dirty
+              controls[name].markAsDirty()
             }
           }
         }
       }
     });
-  }
+  }  
 
   // convenience getter for easy access to form fields
   get f() { return this.addressForm.controls; }

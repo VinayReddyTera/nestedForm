@@ -4,7 +4,7 @@
     It imports necessary modules from Angular core and forms libraries.
 */
 
-import { Component, forwardRef, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import {
   FormControl,
   ControlValueAccessor,
@@ -40,17 +40,26 @@ export class PhoneFormComponent implements ControlValueAccessor,OnInit {
   }
 
   ngOnInit(): void {
+    // Subscribe to the message observable provided by the ApiService
     this.apiservice.message.subscribe((message:any) => {
+      // Check if a message is received
       if(message){
+        // Check if the phoneForm is not valid
         if(!this.phoneForm.valid){
-          if(this.phoneForm.value.phoneNumbers.length >0){
+          // Check if there are phone numbers in the form
+          if(this.phoneForm.value.phoneNumbers.length > 0){
+            // Extract controls from the phoneNumbers FormArray
             const arrayControls = [
               this.phoneForm.controls.phoneNumbers.controls
             ];
+            // Loop through the controls array
             for (let i in arrayControls) {
               for (let j in arrayControls[i]) {
+                // Iterate over each control in the control group
                 for (const name in arrayControls[i][j].controls) {
+                  // Check if the control is invalid
                   if (arrayControls[i][j].controls[name].invalid) {
+                    // Mark the control as dirty
                     arrayControls[i][j].controls[name].markAsDirty();
                   }
                 }
@@ -61,6 +70,7 @@ export class PhoneFormComponent implements ControlValueAccessor,OnInit {
       }
     });
   }
+  
 
   // Method to write form values into the form.
   writeValue(value: any): void {

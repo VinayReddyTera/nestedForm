@@ -34,18 +34,25 @@ export class AppComponent {
   submit() {
     console.log(this.dataForm.value); // Logs the form values to the console.
     this.apiservice.sendMessage(true)
-    // Checks if the form is valid.
+    // Check if the dataForm is valid
     if (this.dataForm.valid) {
+      // If valid, set success message
       this.successMessage = 'Successfully Submitted Form';
     } else {
-      this.errorMessage = 'Required Fields Missing'
+      // If not valid, set error message
+      this.errorMessage = 'Required Fields Missing';
+      // Get all controls in the dataForm
       const controls = this.dataForm.controls;
+      // Loop through each control
       for (const name in controls) {
+        // Check if the control is invalid
         if (controls[name].invalid) {
-          controls[name].markAsDirty()
+          // Mark the control as dirty
+          controls[name].markAsDirty();
         }
       }
     }
+    // Set a timeout to clear error and success messages after 3 seconds
     setTimeout(() => {
       this.errorMessage = '';
       this.successMessage = '';

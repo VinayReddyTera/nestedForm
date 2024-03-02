@@ -1,65 +1,79 @@
 <div class="row mt-2 pt-5 mb-5">
-    <div class="col-md-4 offset-4">
+  <div class="col-md-4 offset-4">
 
-        <!-- form start -->
-        <div class="card">
-            <div class="card-body">
-                <form [formGroup]="dataForm" (ngSubmit)="submit()">
-                    <h5>User Data</h5>
-                    <div class="mb-3">
-                        <label for="name">Name</label>
-                        <input type="text" class="form-control" id="name" formControlName="name">
-                    </div>
-                    <div class="mb-3">
-                        <label for="email">Email</label>
-                        <input type="email" class="form-control" formControlName="email">
-                    </div>
-                    <div class="mb-3">
-                        <app-address-form id="address" formControlName="addressData" ngDefaultControl></app-address-form>
-                    </div>
-                    <div class="mb-3">
-                        <app-phone-form id="phoneNo" formControlName="phoneNumbers" ngDefaultControl></app-phone-form>
-                    </div>
-                     <button type="submit" class="btn btn-success">Submit</button>
-                     <div *ngIf="errorMessage" class="text-danger text-center font-weight-bold mt-1">{{errorMessage}}</div>
-                     <div *ngIf="successMessage" class="text-success text-center font-weight-bold mt-1">{{successMessage}}</div>
-                </form>
-            </div>
-        </div>
-        <!-- form end -->
-
-        <!-- table start -->
-        <table class="table table-bordered mt-3" id="dataTable">
-            <thead class="thead-light">
-              <tr>
-                <th scope="col">Field</th>
-                <th scope="col">Value</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>Name</td>
-                <td id="name">{{dataForm.value.name || 'N/A'}}</td>
-              </tr>
-              <tr>
-                <td>Email</td>
-                <td id="email">{{dataForm.value.email || 'N/A'}}</td>
-              </tr>
-              <tr *ngFor="let number of dataForm.value.phoneNumbers?.phoneNumbers;let i = index">
-                <td>Phone Number {{i+1}}</td>
-                <td [id]="'phone'+i">{{number.phoneNumber || 'N/A'}}</td>
-              </tr>
-              <tr>
-                <td>Address</td>
-                <td id="address">{{dataForm.value.addressData?.address || 'N/A'}}</td>
-              </tr>
-              <tr>
-                <td>Pincode</td>
-                <td id="pincode">{{dataForm.value.addressData?.pincode || 'N/A'}}</td>
-              </tr>
-            </tbody>
-        </table>
-        <!-- table end -->
-
+    <!-- Form Start -->
+    <div class="card">
+      <div class="card-body">
+        <!-- Form -->
+        <form [formGroup]="dataForm" (ngSubmit)="submit()">
+          <h5>User Data</h5>
+          <!-- Name Input -->
+          <div class="mb-3">
+            <label for="name">Name</label>
+            <input type="text" class="form-control" id="name" formControlName="name">
+          </div>
+          <!-- Email Input -->
+          <div class="mb-3">
+            <label for="email">Email</label>
+            <input type="email" class="form-control" formControlName="email">
+          </div>
+          <!-- Address Form Component(Child Component) -->
+          <div class="mb-3">
+            <app-address-form id="address" formControlName="addressData" ngDefaultControl></app-address-form>
+          </div>
+          <!-- Phone Form Component(Child Component) -->
+          <div class="mb-3">
+            <app-phone-form id="phoneNo" formControlName="phoneNumbers" ngDefaultControl></app-phone-form>
+          </div>
+          <!-- Submit Button -->
+          <button type="submit" class="btn btn-success">Submit</button>
+          <!-- Error Message -->
+          <div *ngIf="errorMessage" class="text-danger text-center font-weight-bold mt-1">{{errorMessage}}</div>
+          <!-- Success Message -->
+          <div *ngIf="successMessage" class="text-success text-center font-weight-bold mt-1">{{successMessage}}</div>
+        </form>
+        <!-- Form End -->
+      </div>
     </div>
+    <!-- Form End -->
+
+    <!-- Table Start -->
+    <table class="table table-bordered mt-3" id="dataTable">
+      <thead class="thead-light">
+        <tr>
+          <th scope="col">Field</th>
+          <th scope="col">Value</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Name Row -->
+        <tr>
+          <td>Name</td>
+          <td id="name">{{dataForm.value.name || 'N/A'}}</td>
+        </tr>
+        <!-- Email Row -->
+        <tr>
+          <td>Email</td>
+          <td id="email">{{dataForm.value.email || 'N/A'}}</td>
+        </tr>
+        <!-- Phone Number Rows(we use ngFor to iterate over phoneNumbers array) -->
+        <tr *ngFor="let number of dataForm.value.phoneNumbers?.phoneNumbers;let i = index">
+          <td>Phone Number {{i+1}}</td>
+          <td [id]="'phone'+i">{{number.phoneNumber || 'N/A'}}</td>
+        </tr>
+        <!-- Address Row -->
+        <tr>
+          <td>Address</td>
+          <td id="address">{{dataForm.value.addressData?.address || 'N/A'}}</td>
+        </tr>
+        <!-- Pincode Row -->
+        <tr>
+          <td>Pincode</td>
+          <td id="pincode">{{dataForm.value.addressData?.pincode || 'N/A'}}</td>
+        </tr>
+      </tbody>
+    </table>
+    <!-- Table End -->
+
+  </div>
 </div>
