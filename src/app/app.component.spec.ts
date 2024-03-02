@@ -115,7 +115,4 @@ describe('AppComponent', () => {
     expect(pincodeCell).toBeTruthy();
     expect(pincodeCell.textContent.trim()).toEqual('12345');
   });
-  
-
-  // Add more test cases as needed
 });
