@@ -115,5 +115,53 @@ describe('PhoneFormComponent', () => {
     expect(control1.dirty).toBeTrue();
     expect(control1.errors).not.toBeNull(); // Or use specific error assertions
   });
+
+  it('should not mark phone form controls as dirty when no message is received', () => {
+    // Set up initial form control with validation
+    const control1 = new FormControl('', Validators.required);
+    control1.setValue(''); // Set a value for the FormControl
+    control1.markAsDirty();
+    control1.setErrors({ required: true });
+  
+    // Initialize FormArray with the control
+    const phoneNumbers = new FormArray([control1]);
+    component.phoneForm.get('phoneNumbers').setValue([{ phoneNumber: '1234567890' }]);
+  
+    // Mock message using BehaviorSubject to simulate an observable with no message
+    const subject = new BehaviorSubject<any>(null);
+    apiService.message = subject;
+  
+    // Trigger ngOnInit
+    component.ngOnInit();
+  
+    // Assert that the control remains dirty and has errors after ngOnInit
+    expect(control1.dirty).toBeTrue();
+    expect(control1.errors).not.toBeNull(); // Or use specific error assertions
+  });
+  
+  it('should not mark phone form controls as dirty when message is received but form is valid', () => {
+    // Set up initial form control without validation
+    const control1 = new FormControl('1234567890');
+  
+    // Initialize FormArray with the control
+    const phoneNumbers = new FormArray([control1]);
+    component.phoneForm.get('phoneNumbers').setValue([{ phoneNumber: '1234567890' }]);
+  
+    // Mock message using BehaviorSubject to simulate an observable
+    const message = true;
+    const subject = new BehaviorSubject<any>(null);
+    apiService.message = subject;
+  
+    // Trigger ngOnInit
+    component.ngOnInit();
+  
+    // Emit the message
+    subject.next(message);
+  
+    // Assert that the control remains pristine and has no errors after ngOnInit
+    expect(control1.dirty).toBeFalse();
+    expect(control1.errors).toBeNull(); // Or use specific error assertions
+  });
+  
   
 });
